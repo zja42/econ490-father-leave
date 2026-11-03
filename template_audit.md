@@ -1,15 +1,11 @@
-# COMET16 template audit
+# COMET16 template and raw-data audit
 
-The user explicitly approved one method adaptation: each country has its own reform year. Data paths, outcome variable and unit names are substituted for this study.
+The main regression and event-study templates retain COMET16 sections16.4/16.5. The approved model adaptation remains country-specific reform dates, with study-specific variable names and data paths.
 
-- Main regression: `areg employment_gap 1.treated#1.post i.year, absorb(country_id)` maps directly to section16.4.
-- Event regression: the same four event dummies and `i.year, absorb(country_id)` as section16.5.
-- Date generation: the example constant2003 is replaced by the prepared country-specific reform_year, as approved.
-- Event reference, -2/+2 bins, capture drop, tabulate and coefplot options follow the chapter.
-- Employment_gap is prepared in the input. No log is applied to the gap.
-- No comparison stack, comparison-country effects, comparison-year effects, extra covariates, trends, weights, clustered options, or additional diagnostics occur in either do file.
-- Each country-year occurs once. No artificial records were added.
+On2026-11-03 the user additionally required raw inputs and all analysis preparation in the do-files. Each do-file therefore includes import excel/import delimited, country lookup merges, legal-year corrections, entitlement-option parsing, quality/sample filters, reshape, employment-rate and gap calculations, reform-year construction, and generated panel exports. These are disclosed data-preparation additions, not literal copies of the lesson. No extra regressors, weights, trends or covariance options have been added.
 
-This is the selected chapter16.4/16.5 model template with approved substitutions, not a byte-for-byte copy of the entire notebook. It is explicitly a simple TWFE benchmark; the chapter warns about interpreting different treatment dates.
+The ILO CSV is only decompressed. The Eurostat raw CSV is an unfiltered, lossless decoding of all reported numeric observations from the archived JSON; the original JSON is supplied too. It contains no calculated rates, gap, country identifiers, treatment indicators or reform dates. The static country dictionary is metadata. Generated analysis DTA/CSV files are outputs, never startup inputs.
+
+The policy definition, sample restrictions and legal-year corrections are preserved rather than chosen in response to significance. Rebuilt country-years, treatment dates and gaps match the previous tested specification. This remains a simple TWFE benchmark under different treatment dates, not a modern staggered-adoption causal ATT estimate.
 
 Source: https://ubcecon.github.io/comet-open/docs/5_Research/econ490-pystata/16_Diff_in_Diff.html

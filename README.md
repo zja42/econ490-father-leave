@@ -4,7 +4,7 @@ ECON 490 research baseline using the simple TWFE and event-study templates in [C
 
 ## Current specification
 
-Each original country-year occurs once. There are no comparison stacks or comparison-specific fixed effects. The outcome is the male employment rate minus the female employment rate, in percentage points, prepared in the input data.
+Each original country-year occurs once. There are no comparison stacks or comparison-specific fixed effects. The outcome is the male employment rate minus the female employment rate, in percentage points, calculated inside each do-file from the raw employment records.
 
 ```stata
 generate post = year>=reform_year
@@ -39,9 +39,19 @@ Earlier local stacked-model p-values are not the results of these do-files and a
 
 ## Running
 
-Use Stata17 or later with this repository root as the working directory. Open and run `OECD_TWFE.do` or `EUROPE_TWFE.do`. The DTA inputs sit next to the scripts. The two JPG event-study outputs are saved in the same directory. `coefplot`, used in COMET16, must already be installed; it is installed on the author's computer. No installation code is added to the do-files.
+Open this folder as Stata's working directory, then run `OECD_TWFE.do` or `EUROPE_TWFE.do`. Both scripts start by importing raw sources; neither starts from an existing analysis DTA. The DTA and CSV panels are generated outputs and may be rebuilt. `coefplot`, used by COMET16, must already be installed.
 
-The scripts were run in Stata, their coefficients and standard errors independently checked within1e-6, and both figures visually checked. `verified_results.csv` and `stata_output.txt` contain actual results; local machine paths have been shortened in the text output. Input CSVs, DTA files, timing audits and source policy records are all versioned.
+Each script imports the original OECD workbook, retains the father-specific total paid/unpaid and total paid entitlement strings, applies the documented legal-year corrections, handles slash-separated options without averaging, identifies each country's first qualifying expansion, imports raw employment records, applies the existing quality/sample rules, merges by country/year, calculates male minus female employment rates, and creates the panel identifiers and treatment variables. The regression and event-study sections retain the approved COMET16 template. The user expressly requested the additional data-preparation commands; the earlier restriction on adding model extensions still applies.
+
+Raw inputs supplied with this folder:
+
+- `oecd_leave_history.xlsx`: unchanged OECD PF2.5 workbook; imported directly with `import excel`.
+- `ilo_household_raw.csv`: unchanged source CSV after byte-preserving decompression of the ILO archive; every source row and column retained.
+- `eurostat_employment_raw.json`: unchanged archived Eurostat API response.
+- `eurostat_employment_raw.csv`: lossless tabular decoding of all 124,529 reported numeric observations in that JSON, with every dimension, value and observation flag. No country, population or sex filtering, rate construction or treatment coding occurs in this storage-format conversion. All those operations occur in the Stata do-file. Missing combinations remain absent; no values are imputed.
+- `country_codes.csv`: static OECD country-name/ISO dictionary. Its nonempty Eurostat codes explicitly retain the established 23-country European sample; this is not all geographically European OECD members. No country is added or removed in this revision.
+
+`raw_sources.json` records source URLs, hashes and conversion notes. The existing annex/timing audits explain legal-year corrections. The scripts were rerun from these sources: OECD477 rows/26 countries and Europe295 rows/23 countries, identical country-years and treatment dates to the previous version; employment-gap differences are below1e-10 percentage points. The policy coefficients and p-values are unchanged. `stata_output.txt` contains the actual new run output with the Stata license startup omitted. No prebuilt panel is required as an input.
 
 ## Sources
 

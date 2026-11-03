@@ -1,15 +1,24 @@
 {
-  "stata_execution": "passed",
-  "country_year_duplicates": 0,
-  "independent_coefficient_and_se_tolerance": 1e-06,
+  "raw_source_rebuild": {
+    "oecd": {
+      "Stata_raw_source_execution": "passed",
+      "rows": 477,
+      "countries": 26,
+      "duplicate_country_years": 0,
+      "same_country_years_and_treatment_as_previous": true,
+      "maximum_employment_gap_difference": 7.105427357601002e-15
+    },
+    "europe": {
+      "Stata_raw_source_execution": "passed",
+      "rows": 295,
+      "countries": 23,
+      "duplicate_country_years": 0,
+      "same_country_years_and_treatment_as_previous": true,
+      "maximum_employment_gap_difference": 3.907985046680551e-14
+    }
+  },
   "core_regression_template_match": true,
-  "stacking_removed": true,
   "approved_exception": "country-specific reform year",
-  "other_substitutions": [
-    "data paths",
-    "input outcome variable",
-    "unit name"
-  ],
-  "additional_regressors_or_diagnostics": false,
-  "event_graphs": "both visually checked"
+  "user_authorized_preparation": "Raw source import, cleaning, transformations and merges are now performed inside each do-file.",
+  "additional_regressors_or_covariance_options": false
 }
