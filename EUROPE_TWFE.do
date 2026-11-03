@@ -1,4 +1,4 @@
-* Raw-source preparation followed by the COMET16 regression template.
+* Raw-source preparation followed by TWFE DiD and event-study regressions.
 clear*
 * Import the original OECD policy workbook.
 import delimited "data/country_codes.csv", clear varnames(1) stringcols(_all)
@@ -114,12 +114,12 @@ save `panel'
 save "data/europe_twfe.dta", replace
 export delimited using "data/europe_twfe.csv", replace
 
-* Simple TWFE benchmark: COMET16 with country-specific reform years.
+* Simple TWFE DiD with country-specific reform years.
 xtset country_id year, yearly
 generate post = year>=reform_year
 areg employment_gap 1.treated#1.post i.year, absorb(country_id)
 
-* Event study: COMET16 section 16.5.
+* Event study with year -1 as the reference.
 clear*
 use `panel', clear
 capture drop time_entering_treatment

@@ -1,15 +1,15 @@
 {
-  "CHANGELOG.md": "d4f596a913fdf74f7d3fc1545637d2b6fb3db2744118b401f789eeaf361fd207",
-  "template_audit.md": "e1deb15eea4a2dc451b2cfb18a724ad6759928753545ac57ad9a6f6007185c3b",
-  "README.md": "bb7f5408ec02100f97c95fab2bdb2a3a96da05341fab9cafba8da0e2c6924511",
-  "OECD_TWFE.do": "f68822c9f9da13fea3720af7206271e5f8b9a1c5e7ee6aee3197be1bd3e22221",
+  "CHANGELOG.md": "a41ae6087884181463bc120fb1d9a6b4b6d588a95479bd9252f29491b82b59b8",
+  "template_audit.md": "79a4172853cc622251d8567a0a27c599c2aeafbb9a4969c0595f518cc4e9de53",
+  "README.md": "d81bd2b84aed44d3be0871c8e1d468b363baa1045c2bc76a8a27c1b8135e7c25",
+  "OECD_TWFE.do": "fb7fc330a4c37137b950d91744fbf22f0fa84d7074c916742a333b2d797e8eee",
   ".gitignore": "1505a1de929ad44f87cd1fa8d27eac8a54b37bafc39f9f76ce0e20628660dd94",
-  "EUROPE_TWFE.do": "258f6e4797064aaaa80919f84bba21f80982bd3942fe61a55a8185ab4716b190",
-  "AGENTS.md": "6012793651acbb614e8f54ff2f0eb4da49c43d0b131bb4d3d29bf72d4fad4e89",
-  "results/stata_output.txt": "ab873cdcb65017268c4a07c7ccc44ede0adba230bf787dc1931c0fbee2d8d290",
+  "EUROPE_TWFE.do": "7eb81c529d3aff51f4f606b7d0d99003b7286ae95160b37a98dbe88fdc2d9c0a",
+  "AGENTS.md": "5a1acc432860f7c491b248e2de8f7d61ebcc4d6be8c447a957c96cf09edc0c8b",
+  "results/stata_output.txt": "3069d58a099797561cf0b94757920b3b5665d25f8b017793e67b5b537220e803",
   "results/oecd_twfe_event_study.jpg": "d13d773ecdfd50df39dcd9c675f469e93dd69e8b0b6947d12c466aaf4a3be932",
   "results/europe_twfe_event_study.jpg": "87cbc8c70ae4b8a7324d16ea0e43442b57e93b623613c7aa1c8ceed7c79bc8d2",
-  "results/verification.json": "946b233a40aa80b99847bb06eded880ce65d30210f705418d935003e3890442d",
+  "results/verification.json": "c212b22d8d9ed02e42328bc0a6ede0e2e8132395b397f0bca0e8bf1585695af5",
   "results/verified_results.csv": "25c03b3f2fc8402a3d9268523505efa4f1549793dba0258fcbdba005abc5dd0d",
   "data/europe_twfe.dta": "1fa9a0902269c9f1b193d0dc911c5fafb7019d1ae3e29afdcdf680959d9bc1dc",
   "data/europe_country_timing_audit.csv": "200a71bcc5212d8cc47afac9f882996ae3ff80ce7cc37663acfd691e890d66c1",
@@ -25,5 +25,5 @@
   "data/policy_source_and_timing.csv": "cadd9d12c83c55171f3c71ee8a3f58ea8e340cde06fb2b1ab92a5c26d59cefbc",
   "data/raw_sources.json": "b59ff2435c4398823cf9e14b6d2487f3dd7e5657f0b1654b752d7606f2ec10de",
   "data/oecd_twfe.csv": "60d1c1fc1e93388ab81b3a3fa81fc5d8b0ecf4352c48f66f7fc3487601fdbb7f",
-  "data/definition.json": "1079bb10791f4dd8ce8648efaf4eedcfceec31900915a7a9d9d25e3f733ed111"
+  "data/definition.json": "36bf2f4e481663d18ad2e025e9274b47115f85d403db0cda0c0317ed30de86d3"
 }
