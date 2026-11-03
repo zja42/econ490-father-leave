@@ -20,5 +20,21 @@
   "core_regression_template_match": true,
   "approved_exception": "country-specific reform year",
   "user_authorized_preparation": "Raw source import, cleaning, transformations and merges are now performed inside each do-file.",
-  "additional_regressors_or_covariance_options": false
+  "additional_regressors_or_covariance_options": false,
+  "folder_layout_execution": {
+    "oecd": {
+      "Stata_execution_from_new_folders": "passed",
+      "rows": 477,
+      "countries": 26,
+      "analysis_panel_unchanged": true,
+      "event_study_jpg_unchanged": true
+    },
+    "europe": {
+      "Stata_execution_from_new_folders": "passed",
+      "rows": 295,
+      "countries": 23,
+      "analysis_panel_unchanged": true,
+      "event_study_jpg_unchanged": true
+    }
+  }
 }

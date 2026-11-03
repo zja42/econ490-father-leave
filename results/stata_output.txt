@@ -4,14 +4,14 @@
 . clear*
 
 . * Import the original OECD policy workbook.
-. import delimited "country_codes.csv", clear varnames(1) stringcols(_all)
+. import delimited "data/country_codes.csv", clear varnames(1) stringcols(_all)
 (encoding automatically selected: UTF-8)
 (3 vars, 38 obs)
 
 . tempfile country_codes euro_codes policy panel
 
 . save `country_codes'
-file /var/folders/70/c_t3zk1175x0jxm83ldvyly00000gn/T//S_08375.000001 saved as .dta format
+file /var/folders/70/c_t3zk1175x0jxm83ldvyly00000gn/T//S_09064.000001 saved as .dta format
 
 . preserve
 
@@ -19,12 +19,12 @@ file /var/folders/70/c_t3zk1175x0jxm83ldvyly00000gn/T//S_08375.000001 saved as .
 (15 observations deleted)
 
 . save `euro_codes'
-file /var/folders/70/c_t3zk1175x0jxm83ldvyly00000gn/T//S_08375.000002 saved as .dta format
+file /var/folders/70/c_t3zk1175x0jxm83ldvyly00000gn/T//S_09064.000002 saved as .dta format
 
 . restore
 
 . 
-. import excel "oecd_leave_history.xlsx", sheet("Time-Series") cellrange(A9) allstring clear
+. import excel "data/oecd_leave_history.xlsx", sheet("Time-Series") cellrange(A9) allstring clear
 (20 vars, 2,128 obs)
 
 . rename A country
@@ -181,11 +181,11 @@ paid_option2: all characters numeric; replaced as double
 (1,140 observations deleted)
 
 . save `policy'
-file /var/folders/70/c_t3zk1175x0jxm83ldvyly00000gn/T//S_08375.000003 saved as .dta format
+file /var/folders/70/c_t3zk1175x0jxm83ldvyly00000gn/T//S_09064.000003 saved as .dta format
 
 . 
 . * Import the unchanged ILO source CSV, decompressed from the source archive.
-. import delimited "ilo_household_raw.csv", clear varnames(1) stringcols(_all)
+. import delimited "data/ilo_household_raw.csv", clear varnames(1) stringcols(_all)
 (encoding automatically selected: ISO-8859-1)
 (11 vars, 169,678 obs)
 
@@ -266,13 +266,13 @@ xij variables:
 . sort country_id year
 
 . save `panel'
-file /var/folders/70/c_t3zk1175x0jxm83ldvyly00000gn/T//S_08375.000004 saved as .dta format
+file /var/folders/70/c_t3zk1175x0jxm83ldvyly00000gn/T//S_09064.000004 saved as .dta format
 
-. save "oecd_twfe.dta", replace
-file oecd_twfe.dta saved
+. save "data/oecd_twfe.dta", replace
+file data/oecd_twfe.dta saved
 
-. export delimited using "oecd_twfe.csv", replace
-file oecd_twfe.csv saved
+. export delimited using "data/oecd_twfe.csv", replace
+file data/oecd_twfe.csv saved
 
 . 
 . * Simple TWFE benchmark: COMET16 with country-specific reform years.
@@ -489,9 +489,8 @@ F test of absorbed indicators: F(25, 423) = 210.186           Prob > F = 0.000
 >     rename(event_time_dummy1="k=-2" event_time_dummy3="k=0" event_time_dummy4="k=+1" event_time_dum
 > my5="k=+2")
 
-. graph export "oecd_twfe_event_study.jpg", as(jpg) replace
-file /Users/jinzewen/Documents/ChatGPT/econ
-    490/work/raw_stata_revision/package/oecd_twfe_event_study.jpg saved as JPG format
+. graph export "results/oecd_twfe_event_study.jpg", as(jpg) replace
+file [working directory]/results/oecd_twfe_event_study.jpg saved as JPG format
 
 . 
 end of do-file
@@ -503,14 +502,14 @@ end of do-file
 . clear*
 
 . * Import the original OECD policy workbook.
-. import delimited "country_codes.csv", clear varnames(1) stringcols(_all)
+. import delimited "data/country_codes.csv", clear varnames(1) stringcols(_all)
 (encoding automatically selected: UTF-8)
 (3 vars, 38 obs)
 
 . tempfile country_codes euro_codes policy panel
 
 . save `country_codes'
-file /var/folders/70/c_t3zk1175x0jxm83ldvyly00000gn/T//S_08379.000001 saved as .dta format
+file /var/folders/70/c_t3zk1175x0jxm83ldvyly00000gn/T//S_09055.000001 saved as .dta format
 
 . preserve
 
@@ -518,12 +517,12 @@ file /var/folders/70/c_t3zk1175x0jxm83ldvyly00000gn/T//S_08379.000001 saved as .
 (15 observations deleted)
 
 . save `euro_codes'
-file /var/folders/70/c_t3zk1175x0jxm83ldvyly00000gn/T//S_08379.000002 saved as .dta format
+file /var/folders/70/c_t3zk1175x0jxm83ldvyly00000gn/T//S_09055.000002 saved as .dta format
 
 . restore
 
 . 
-. import excel "oecd_leave_history.xlsx", sheet("Time-Series") cellrange(A9) allstring clear
+. import excel "data/oecd_leave_history.xlsx", sheet("Time-Series") cellrange(A9) allstring clear
 (20 vars, 2,128 obs)
 
 . rename A country
@@ -680,12 +679,12 @@ paid_option2: all characters numeric; replaced as double
 (1,140 observations deleted)
 
 . save `policy'
-file /var/folders/70/c_t3zk1175x0jxm83ldvyly00000gn/T//S_08379.000003 saved as .dta format
+file /var/folders/70/c_t3zk1175x0jxm83ldvyly00000gn/T//S_09055.000003 saved as .dta format
 
 . 
 . * Import every reported observation from the original Eurostat JSON.
 . * The CSV changes the storage format only; the JSON is supplied alongside it.
-. import delimited "eurostat_employment_raw.csv", clear varnames(1) stringcols(_all)
+. import delimited "data/eurostat_employment_raw.csv", clear varnames(1) stringcols(_all)
 (encoding automatically selected: ISO-8859-1)
 (11 vars, 124,529 obs)
 
@@ -792,13 +791,13 @@ xij variables:
 . sort country_id year
 
 . save `panel'
-file /var/folders/70/c_t3zk1175x0jxm83ldvyly00000gn/T//S_08379.000004 saved as .dta format
+file /var/folders/70/c_t3zk1175x0jxm83ldvyly00000gn/T//S_09055.000004 saved as .dta format
 
-. save "europe_twfe.dta", replace
-file europe_twfe.dta saved
+. save "data/europe_twfe.dta", replace
+file data/europe_twfe.dta saved
 
-. export delimited using "europe_twfe.csv", replace
-file europe_twfe.csv saved
+. export delimited using "data/europe_twfe.csv", replace
+file data/europe_twfe.csv saved
 
 . 
 . * Simple TWFE benchmark: COMET16 with country-specific reform years.
@@ -980,9 +979,8 @@ F test of absorbed indicators: F(22, 255) = 222.536           Prob > F = 0.000
 >     rename(event_time_dummy1="k=-2" event_time_dummy3="k=0" event_time_dummy4="k=+1" event_time_dum
 > my5="k=+2")
 
-. graph export "europe_twfe_event_study.jpg", as(jpg) replace
-file /Users/jinzewen/Documents/ChatGPT/econ
-    490/work/raw_stata_revision/package/europe_twfe_event_study.jpg saved as JPG format
+. graph export "results/europe_twfe_event_study.jpg", as(jpg) replace
+file [working directory]/results/europe_twfe_event_study.jpg saved as JPG format
 
 . 
 end of do-file
