@@ -1,7 +1,7 @@
 * Raw-source preparation followed by the COMET16 regression template.
 clear*
 * Import the original OECD policy workbook.
-import delimited "country_codes.csv", clear varnames(1) stringcols(_all)
+import delimited "data/country_codes.csv", clear varnames(1) stringcols(_all)
 tempfile country_codes euro_codes policy panel
 save `country_codes'
 preserve
@@ -9,7 +9,7 @@ keep if geo!=""
 save `euro_codes'
 restore
 
-import excel "oecd_leave_history.xlsx", sheet("Time-Series") cellrange(A9) allstring clear
+import excel "data/oecd_leave_history.xlsx", sheet("Time-Series") cellrange(A9) allstring clear
 rename A country
 rename B year
 rename S total_all_raw
@@ -76,7 +76,7 @@ save `policy'
 
 * Import every reported observation from the original Eurostat JSON.
 * The CSV changes the storage format only; the JSON is supplied alongside it.
-import delimited "eurostat_employment_raw.csv", clear varnames(1) stringcols(_all)
+import delimited "data/eurostat_employment_raw.csv", clear varnames(1) stringcols(_all)
 rename time year
 destring year value, replace
 keep if freq=="A" & age=="Y25-54" & unit=="THS_PER"
@@ -111,8 +111,8 @@ encode iso, generate(country_id)
 isid country_id year
 sort country_id year
 save `panel'
-save "europe_twfe.dta", replace
-export delimited using "europe_twfe.csv", replace
+save "data/europe_twfe.dta", replace
+export delimited using "data/europe_twfe.csv", replace
 
 * Simple TWFE benchmark: COMET16 with country-specific reform years.
 xtset country_id year, yearly
@@ -136,4 +136,4 @@ tabulate event_time, gen(event_time_dummy)
 areg employment_gap event_time_dummy1 event_time_dummy3 event_time_dummy4 event_time_dummy5 i.year, absorb(country_id)
 coefplot, keep(event_time_*) vertical graphregion(color(white)) yline(0) ///
     rename(event_time_dummy1="k=-2" event_time_dummy3="k=0" event_time_dummy4="k=+1" event_time_dummy5="k=+2")
-graph export "europe_twfe_event_study.jpg", as(jpg) replace
+graph export "results/europe_twfe_event_study.jpg", as(jpg) replace

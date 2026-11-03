@@ -39,19 +39,19 @@ Earlier local stacked-model p-values are not the results of these do-files and a
 
 ## Running
 
-Open this folder as Stata's working directory, then run `OECD_TWFE.do` or `EUROPE_TWFE.do`. Both scripts start by importing raw sources; neither starts from an existing analysis DTA. The DTA and CSV panels are generated outputs and may be rebuilt. `coefplot`, used by COMET16, must already be installed.
+Open this folder as Stata's working directory, then run `OECD_TWFE.do` or `EUROPE_TWFE.do`. Both scripts start by importing raw sources; neither starts from an existing analysis DTA. The DTA and CSV panels in `data/` are generated outputs and may be rebuilt. Figures and checked result tables/logs are in `results/`. `coefplot`, used by COMET16, must already be installed.
 
 Each script imports the original OECD workbook, retains the father-specific total paid/unpaid and total paid entitlement strings, applies the documented legal-year corrections, handles slash-separated options without averaging, identifies each country's first qualifying expansion, imports raw employment records, applies the existing quality/sample rules, merges by country/year, calculates male minus female employment rates, and creates the panel identifiers and treatment variables. The regression and event-study sections retain the approved COMET16 template. The user expressly requested the additional data-preparation commands; the earlier restriction on adding model extensions still applies.
 
-Raw inputs supplied with this folder:
+Raw inputs supplied in `data/`:
 
-- `oecd_leave_history.xlsx`: unchanged OECD PF2.5 workbook; imported directly with `import excel`.
-- `ilo_household_raw.csv`: unchanged source CSV after byte-preserving decompression of the ILO archive; every source row and column retained.
-- `eurostat_employment_raw.json`: unchanged archived Eurostat API response.
-- `eurostat_employment_raw.csv`: lossless tabular decoding of all 124,529 reported numeric observations in that JSON, with every dimension, value and observation flag. No country, population or sex filtering, rate construction or treatment coding occurs in this storage-format conversion. All those operations occur in the Stata do-file. Missing combinations remain absent; no values are imputed.
-- `country_codes.csv`: static OECD country-name/ISO dictionary. Its nonempty Eurostat codes explicitly retain the established 23-country European sample; this is not all geographically European OECD members. No country is added or removed in this revision.
+- `data/oecd_leave_history.xlsx`: unchanged OECD PF2.5 workbook; imported directly with `import excel`.
+- `data/ilo_household_raw.csv`: unchanged source CSV after byte-preserving decompression of the ILO archive; every source row and column retained.
+- `data/eurostat_employment_raw.json`: unchanged archived Eurostat API response.
+- `data/eurostat_employment_raw.csv`: lossless tabular decoding of all 124,529 reported numeric observations in that JSON, with every dimension, value and observation flag. No country, population or sex filtering, rate construction or treatment coding occurs in this storage-format conversion. All those operations occur in the Stata do-file. Missing combinations remain absent; no values are imputed.
+- `data/country_codes.csv`: static OECD country-name/ISO dictionary. Its nonempty Eurostat codes explicitly retain the established 23-country European sample; this is not all geographically European OECD members. No country is added or removed in this revision.
 
-`raw_sources.json` records source URLs, hashes and conversion notes. The existing annex/timing audits explain legal-year corrections. The scripts were rerun from these sources: OECD477 rows/26 countries and Europe295 rows/23 countries, identical country-years and treatment dates to the previous version; employment-gap differences are below1e-10 percentage points. The policy coefficients and p-values are unchanged. `stata_output.txt` contains the actual new run output with the Stata license startup omitted. No prebuilt panel is required as an input.
+`data/raw_sources.json` records source URLs, hashes and conversion notes. The existing annex/timing audits explain legal-year corrections. The scripts were rerun from these sources: OECD477 rows/26 countries and Europe295 rows/23 countries, identical country-years and treatment dates to the previous version; employment-gap differences are below1e-10 percentage points. The policy coefficients and p-values are unchanged. `results/stata_output.txt` contains the actual new run output with the Stata license startup omitted. No prebuilt panel is required as an input.
 
 ## Sources
 
@@ -60,4 +60,16 @@ Raw inputs supplied with this folder:
 - [OECD country policy annex](https://webfs.oecd.org/els-com/Family_Database/PF2_5_Trends_in_leave_entitlements_around_childbirth_annex.pdf)
 - [OECD membership](https://www.oecd.org/en/about/members-partners.html)
 
-This private repository starts with the corrected, unstacked chapter-template baseline on2026-11-03. Later authorized research revisions should update code, data, audits and results together and preserve the change history.
+This repository started privately with the corrected, unstacked chapter-template baseline on2026-11-03. Later authorized research revisions should update code, data, audits and results together and preserve the change history.
+
+## Folder layout
+
+```text
+econ490-father-leave/
+  OECD_TWFE.do
+  EUROPE_TWFE.do
+  data/       # Raw records, country lookup, generated panels and policy audits
+  results/    # Event-study JPGs, regression table, checked Stata output and verification
+```
+
+Run both do-files with the repository root as the working directory. Their input and output paths use these folders. This is a public repository as requested on2026-11-03. The folder changes do not alter data, country selection, policy timing or the model.
