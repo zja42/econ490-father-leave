@@ -1,6 +1,6 @@
 . do OECD_TWFE.do 
 
-. * Raw-source preparation followed by the COMET16 regression template.
+. * Raw-source preparation followed by TWFE DiD and event-study regressions.
 . clear*
 
 . * Import the original OECD policy workbook.
@@ -275,7 +275,7 @@ file data/oecd_twfe.dta saved
 file data/oecd_twfe.csv saved
 
 . 
-. * Simple TWFE benchmark: COMET16 with country-specific reform years.
+. * Simple TWFE DiD with country-specific reform years.
 . xtset country_id year, yearly
 
 Panel variable: country_id (unbalanced)
@@ -331,7 +331,7 @@ treated#post |
 F test of absorbed indicators: F(25, 426) = 212.626           Prob > F = 0.000
 
 . 
-. * Event study: COMET16 section 16.5.
+. * Event study with year -1 as the reference.
 . clear*
 
 . use `panel', clear
@@ -498,7 +498,7 @@ end of do-file
 
 . do EUROPE_TWFE.do 
 
-. * Raw-source preparation followed by the COMET16 regression template.
+. * Raw-source preparation followed by TWFE DiD and event-study regressions.
 . clear*
 
 . * Import the original OECD policy workbook.
@@ -800,7 +800,7 @@ file data/europe_twfe.dta saved
 file data/europe_twfe.csv saved
 
 . 
-. * Simple TWFE benchmark: COMET16 with country-specific reform years.
+. * Simple TWFE DiD with country-specific reform years.
 . xtset country_id year, yearly
 
 Panel variable: country_id (unbalanced)
@@ -845,7 +845,7 @@ treated#post |
 F test of absorbed indicators: F(22, 258) = 257.769           Prob > F = 0.000
 
 . 
-. * Event study: COMET16 section 16.5.
+. * Event study with year -1 as the reference.
 . clear*
 
 . use `panel', clear

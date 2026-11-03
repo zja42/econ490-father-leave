@@ -36,5 +36,11 @@
       "analysis_panel_unchanged": true,
       "event_study_jpg_unchanged": true
     }
+  },
+  "presentation_label_update": {
+    "date": "2026-11-03",
+    "executable_stata_statements_unchanged": true,
+    "source_data_and_numeric_results_unchanged": true,
+    "checked_output_comment_labels_updated": true
   }
 }
