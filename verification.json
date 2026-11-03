@@ -1,0 +1,15 @@
+{
+  "stata_execution": "passed",
+  "country_year_duplicates": 0,
+  "independent_coefficient_and_se_tolerance": 1e-06,
+  "core_regression_template_match": true,
+  "stacking_removed": true,
+  "approved_exception": "country-specific reform year",
+  "other_substitutions": [
+    "data paths",
+    "input outcome variable",
+    "unit name"
+  ],
+  "additional_regressors_or_diagnostics": false,
+  "event_graphs": "both visually checked"
+}

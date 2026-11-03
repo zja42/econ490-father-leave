@@ -1,0 +1,11 @@
+{
+  "design": "simple TWFE benchmark, unstacked country-year panel",
+  "treatment": "first source-recorded non-reducing expansion of total paid/unpaid or paid father-specific entitlement in the common 2000-2024 catalogue",
+  "multiple_expansions": "country remains post after its first mapped expansion; later changes are not separately estimated",
+  "reference": "COMET16 sections16.4 and16.5",
+  "approved_exception": "each country has its own implementation year instead of a single common year",
+  "other_changes": "data paths, outcome and unit variable names only",
+  "controls": "no mapped qualifying expansion; may already have leave or have other policy changes",
+  "missing_policy": "no zero imputation; outcome rows without known entitlement sets omitted",
+  "inference": "chapter default, descriptive TWFE benchmark; not a modern staggered-adoption ATT"
+}

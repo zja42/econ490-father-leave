@@ -1,0 +1,23 @@
+{
+  "europe_twfe.dta": "f3016cffba64cb42a7c457326f6ee8cbe6adf6807287bcd3c0f16a26bd4c3641",
+  "CHANGELOG.md": "c001eafcb36213bac238e14555a6e1e24c64fdb95254c53ddb57d81db109edf1",
+  "europe_country_timing_audit.csv": "200a71bcc5212d8cc47afac9f882996ae3ff80ce7cc37663acfd691e890d66c1",
+  "annex_effective_year_alignment.csv": "86ab17b6f1d453f788f34b86f7bfa14a665156f753e33314f9f16e05e04a882e",
+  "oecd_twfe.dta": "918efdedc97eac856d16e93e874873749f463bb0c308b25a08fd9188c34c9e94",
+  "template_audit.md": "9c9a8a4bc076aa604f0abaf3d24d55ffd18b651e353da9050247298cbe520b48",
+  "README.md": "22e02a298a1d2d75523c690e3c2a0b6fce3944f2ee63d1f312842ae8c272bcc3",
+  "OECD_TWFE.do": "b9a6b0dfc7adb57d7594f1274afb4b8cc153e2d74dcd3a45c95f705b12e75ed6",
+  "stata_output.txt": "6a82bab79113e9fb3c645bc9673e5a2583365332eb3160d6f2e92f822461b98a",
+  ".gitignore": "1505a1de929ad44f87cd1fa8d27eac8a54b37bafc39f9f76ce0e20628660dd94",
+  "oecd_country_timing_audit.csv": "758a821bd80592b024b98eaa0d44f0db0b068a41c5ed1ead21738d57777cbf6e",
+  "europe_twfe.csv": "67be73f2a712cc497d15f59bad6d2fecb7e1e2e1edd11fe8987273710b593d06",
+  "oecd_twfe_event_study.jpg": "d13d773ecdfd50df39dcd9c675f469e93dd69e8b0b6947d12c466aaf4a3be932",
+  "europe_twfe_event_study.jpg": "87cbc8c70ae4b8a7324d16ea0e43442b57e93b623613c7aa1c8ceed7c79bc8d2",
+  "verification.json": "e58440ea4dc9f2bfba36c4361748efab3c9bf82611a53e3383b9e697ed167253",
+  "EUROPE_TWFE.do": "32afd15a966950c18efa19581749c5adbe6307ba7219df77a687ad9566c52520",
+  "policy_source_and_timing.csv": "cadd9d12c83c55171f3c71ee8a3f58ea8e340cde06fb2b1ab92a5c26d59cefbc",
+  "AGENTS.md": "c02e7a15b92fed65c1a23ed2c9f284ee8328d62f302bee7c6c06ca138676d661",
+  "verified_results.csv": "25c03b3f2fc8402a3d9268523505efa4f1549793dba0258fcbdba005abc5dd0d",
+  "oecd_twfe.csv": "78f5ae433cbeaf01ba6d7776247f15fc82e5853ca09530de716ede45c06c7651",
+  "definition.json": "1079bb10791f4dd8ce8648efaf4eedcfceec31900915a7a9d9d25e3f733ed111"
+}

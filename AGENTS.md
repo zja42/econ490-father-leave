@@ -1,0 +1,7 @@
+# Research collaboration instructions
+
+The user has authorized GitHub synchronization from this corrected baseline onward to zja42/econ490-father-leave, branch main, private. After an authorized research revision, validate it, update the matching inputs/audits/results and synchronize this repository. Do not silently replace the project with a single-country case study.
+
+The Stata do-files must retain the COMET16 sections16.4/16.5 template. The explicit approved exception is each country's own treatment year. Data paths, input outcome and unit names may be substituted. No stacking, comparison identifiers, extra regressors, trends, weights, covariance options, tests or output commands without a new explicit instruction. Comments must be short English; omit hypothesis-explanation blocks. The response remains the employment gender gap. Clearly label the model a simple TWFE benchmark and never optimize specifications to obtain significance.
+
+This upload uses the signed-in GitHub website because the current connector and CLI do not have private-repository authentication. Use the authorized connection/browser for future synchronization. Do not request, copy or expose credentials, change repository visibility, or force-push. Do not add new integrations. Record actual remote commit information after verified uploads. Keep license-bearing Stata engine logs, machine-specific paths and temporary files out of the repository. The checked text output is intentionally retained.
