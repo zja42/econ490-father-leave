@@ -1,17 +1,17 @@
 [
   {
-    "file": "ilo_household_raw.csv",
+    "file": "data/ilo_household_raw.csv",
     "url": "https://rplumber.ilo.org/data/indicator?id=GED_PEPR_SEX_HHT_CHL_RT_A&format=.csv.gz",
     "sha256": "60401b0a03ed9861eef49d037586ed272c32b3bd83cdff5a8c16063104178830",
     "note": "Byte-preserving decompression of the original source CSV; no filtering or transformation."
   },
   {
-    "file": "oecd_leave_history.xlsx",
+    "file": "data/oecd_leave_history.xlsx",
     "url": "https://webfs.oecd.org/Els-com/Family_Database/PF2_5_Trends_in_leave_entitlements_around_childbirth.xlsx",
     "sha256": "af1c75dbc878c29d3e26026e048af5196f7cfcb424b2b3306f9687dc72f71e66"
   },
   {
-    "file": "eurostat_employment_raw.json",
+    "file": "data/eurostat_employment_raw.json",
     "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/lfst_hhacwnc",
     "note": "Archived API response; all 124529 reported values are decoded to the accompanying CSV. No filtering, employment-rate construction, policy coding or merging is done in this format conversion.",
     "sha256": "742c32d170fcb8b6e99dcef92e6c6454011d324be877891495b489c747c742f0"
