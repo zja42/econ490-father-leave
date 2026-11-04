@@ -55,7 +55,6 @@ Raw inputs supplied in `data/`:
 
 ## Sources
 
-- [Difference-in-differences teaching reference](https://ubcecon.github.io/comet-open/docs/5_Research/econ490-pystata/16_Diff_in_Diff.html)
 - [OECD PF2.5 definitions](https://webfs.oecd.org/els-com/Family_Database/PF2_5_Trends_in_leave_entitlements_around_childbirth.pdf)
 - [OECD country policy annex](https://webfs.oecd.org/els-com/Family_Database/PF2_5_Trends_in_leave_entitlements_around_childbirth_annex.pdf)
 - [OECD membership](https://www.oecd.org/en/about/members-partners.html)
