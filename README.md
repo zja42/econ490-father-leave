@@ -1,74 +1,16 @@
-# Father specific leave and the employment gender gap
+# OECD parental leave panel replication
 
-ECON 490 research on father-specific leave and the employment gender gap using a simple two-way fixed-effects difference-in-differences (TWFE DiD) model and an event study. Each country has its own recorded reform year. This is an exploratory benchmark rather than a modern staggered-adoption causal ATT estimate.
+Run OECD_WEEK_LENGTH_TEST7.do from this folder in Stata with etable support and the xttest3 and xtserial packages installed. The script reads the six bundled input files in data and writes the log and HIC Word table to results.
 
-## Current specification
+The outcome is the male employment rate minus the female employment rate for couples aged 25–54 with children under six. The key regressor is paid father-specific leave weeks. Include the OECD wage replacement percentage centered at 100 and its interaction with weeks. Controls are public maternity and parental leave spending as a share of GDP, paid maternity weeks, lagged log real GDP per capita, and lagged real GDP growth, with country and year fixed effects. Historical policy records are matched by country and year using the supplied script. Keep the bundled WDI snapshot for replication.
 
-Each original country-year occurs once. There are no comparison stacks or comparison-specific fixed effects. The outcome is the male employment rate minus the female employment rate, in percentage points, calculated inside each do-file from the raw employment records.
+The Test7 sequence is fixed effects, year-effects test, repeated fixed effects, heteroskedasticity and serial-correlation diagnostics, AR(1) PCSE, quadratic weeks, 1st/99th-percentile winsorization of the outcome and lagged log GDP per capita, then full-sample and HIC winsorized quadratic models. Preserve the existing estimation commands and options. The Word table reports the HIC model. The log reports the full-sample estimates as well.
 
-```stata
-generate post = year>=reform_year
-areg employment_gap 1.treated#1.post i.year, absorb(country_id)
-```
+Replication targets: 20 countries and 77 country-year observations overall, and 74 observations in HIC. UMC contains Colombia with three observations. LMC and LIC are empty. The full-sample interaction coefficient is -0.016093 (p=0.084) under ordinary FE and -0.0161357 (p=0.002 as printed by Stata) under linear AR(1) PCSE. The AR(1) week coefficient at 100% replacement is 0.3862485 (p=0.126). The interaction describes how the estimated week-length slope varies with the pay rate. Stata reports bounding the estimated AR(1) parameter in the OECD run.
 
-The event study uses four event-time indicators, reference category -1, endpoint bins -2 and +2, ordinary calendar-year effects and country effects. No extra controls, trends, weights, alternative covariance option, polynomial, winsorization or extra diagnostic command is added. The do-files have short English comments and no hypothesis-explanation blocks. `template_audit.md` records the permitted substitutions and the removed extensions.
+## Files
 
-## Data and treatment definition
-
-|Sample|Country-year rows|Countries|Period|
-|---|---:|---:|---|
-|OECD|477|26|2000-2024|
-|European OECD|295|23|2006-2019|
-
-The OECD outcome retains the original couple-with-child-under-six definition. The Eurostat outcome concerns people whose youngest child is under six, without a couple-household restriction. Differences between these samples are not purely geographic.
-
-The policy catalogue covers total father-specific paid and unpaid leave and total paid father-specific leave, including paternity and reserved parental/homecare rights. It does not assign all transferable household leave to fathers. The treatment year is the first source-recorded, non-reducing qualifying expansion in a common2000-2024 catalogue, not first-ever access to leave. The same country's catalogue date is used across both samples. Later expansions remain in its post period rather than being separately identified. `treated=0` means no mapped expansion within the sample horizon, not that fathers have no leave. Source gaps and legal-date adjustments are documented in the policy and country audit files; no unknown entitlement is filled with zero.
-
-Some countries have only pre-reform or only post-reform observations. Canada has one observed year. They remain visible in the country audit and are not presented as contributing a within-country treatment switch. The source-recorded catalogue is not a comprehensive reconstruction of every historical legal change. Country timing audits list pre/post support explicitly.
-
-## Results
-
-|Simple TWFE|Coefficient, percentage points|Default standard error|Default p-value|
-|---|---:|---:|---:|
-|OECD|+0.727431|0.740031|0.326178|
-|European OECD|+0.899024|0.674035|0.183447|
-
-Neither specification finds evidence of a reduction in the employment gender gap. The reported model uses ordinary standard errors. With different treatment dates, a simple TWFE coefficient can differ from the desired average causal effect. These estimates should not be described as robust causal effects. An insignificant event-study pre-coefficient does not prove parallel trends.
-
-Earlier local stacked-model p-values are not the results of these do-files and are not the baseline being uploaded here.
-
-## Running
-
-Open this folder as Stata's working directory, then run `OECD_TWFE.do` or `EUROPE_TWFE.do`. Both scripts start by importing raw sources; neither starts from an existing analysis DTA. The DTA and CSV panels in `data/` are generated outputs and may be rebuilt. Figures and checked result tables/logs are in `results/`. `coefplot` must already be installed for the event-study figures.
-
-Each script imports the original OECD workbook, retains the father-specific total paid/unpaid and total paid entitlement strings, applies the documented legal-year corrections, handles slash-separated options without averaging, identifies each country's first qualifying expansion, imports raw employment records, applies the existing quality/sample rules, merges by country/year, calculates male minus female employment rates, and creates the panel identifiers and treatment variables. The regression and event-study specifications are unchanged. The user expressly requested the additional data-preparation commands; the earlier restriction on adding model extensions still applies.
-
-Raw inputs supplied in `data/`:
-
-- `data/oecd_leave_history.xlsx`: unchanged OECD PF2.5 workbook; imported directly with `import excel`.
-- `data/ilo_household_raw.csv`: unchanged source CSV after byte-preserving decompression of the ILO archive; every source row and column retained.
-- `data/eurostat_employment_raw.json`: unchanged archived Eurostat API response.
-- `data/eurostat_employment_raw.csv`: lossless tabular decoding of all 124,529 reported numeric observations in that JSON, with every dimension, value and observation flag. No country, population or sex filtering, rate construction or treatment coding occurs in this storage-format conversion. All those operations occur in the Stata do-file. Missing combinations remain absent; no values are imputed.
-- `data/country_codes.csv`: static OECD country-name/ISO dictionary. Its nonempty Eurostat codes explicitly retain the established 23-country European sample; this is not all geographically European OECD members. No country is added or removed in this revision.
-
-`data/raw_sources.json` records source URLs, hashes and conversion notes. The existing annex/timing audits explain legal-year corrections. The scripts were rerun from these sources: OECD477 rows/26 countries and Europe295 rows/23 countries, identical country-years and treatment dates to the previous version; employment-gap differences are below1e-10 percentage points. The policy coefficients and p-values are unchanged. `results/stata_output.txt` contains the checked run output with the Stata license startup omitted; comment labels were subsequently updated for presentation. No prebuilt panel is required as an input.
-
-## Sources
-
-- [OECD PF2.5 definitions](https://webfs.oecd.org/els-com/Family_Database/PF2_5_Trends_in_leave_entitlements_around_childbirth.pdf)
-- [OECD country policy annex](https://webfs.oecd.org/els-com/Family_Database/PF2_5_Trends_in_leave_entitlements_around_childbirth_annex.pdf)
-- [OECD membership](https://www.oecd.org/en/about/members-partners.html)
-
-This repository started privately with the corrected, unstacked TWFE DiD baseline on2026-11-03. Later authorized research revisions should update code, data, audits and results together and preserve the change history.
-
-## Folder layout
-
-```text
-econ490-father-leave/
-  OECD_TWFE.do
-  EUROPE_TWFE.do
-  data/       # Raw records, country lookup, generated panels and policy audits
-  results/    # Event-study JPGs, regression table, checked Stata output and verification
-```
-
-Run both do-files with the repository root as the working directory. Their input and output paths use these folders. This is a public repository as requested on2026-11-03. The folder changes do not alter data, country selection, policy timing or the model.
+- `OECD_WEEK_LENGTH_TEST7.do` imports the supplied inputs, constructs the sample and runs the models. Run it with the repository root as Stata's working directory.
+- `data/` contains the OECD PF2.1 historical table extracts for father-specific and maternity leave, the OECD SOCX national-currency workbook, the ILOSTAT household employment extract, the World Development Indicators snapshot and the country lookup.
+- `results/stata_output.txt` contains the checked Stata session output. The run creates a fresh `results/oecd_test7.log`.
+- `results/oecd_Test7table.docx` contains the checked HIC table.

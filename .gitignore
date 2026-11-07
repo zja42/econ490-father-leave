@@ -4,3 +4,6 @@
 work/
 *.zip
 .sync-state.json
+data/*.dta
+!data/wdi_raw.dta
+results/*.dta
