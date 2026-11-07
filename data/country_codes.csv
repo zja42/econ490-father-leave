@@ -1,4 +1,4 @@
-country,iso,geo
+country,countrycode,geo
 Australia,AUS,
 Austria,AUT,AT
 Belgium,BEL,BE
@@ -28,12 +28,12 @@ Luxembourg,LUX,LU
 Latvia,LVA,LV
 Mexico,MEX,
 Netherlands,NLD,NL
-Norway,NOR,
+Norway,NOR,NO
 New Zealand,NZL,
 Poland,POL,PL
 Portugal,PRT,PT
 Slovak Republic,SVK,SK
 Slovenia,SVN,SI
 Sweden,SWE,SE
-Türkiye,TUR,
+Türkiye,TUR,TR
 United States,USA,
