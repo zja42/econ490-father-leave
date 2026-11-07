@@ -1,0 +1,1101 @@
+-----------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  results/oecd_test7.log
+  log type:  text
+ opened on:   5 Nov 2026, 20:59:14
+
+. 
+. import delimited using "data/country_codes.csv", varnames(1) clear
+(encoding automatically selected: UTF-8)
+(3 vars, 38 obs)
+
+. save "data/country_codes.dta", replace
+(file data/country_codes.dta not found)
+file data/country_codes.dta saved
+
+. 
+. import delimited using "data/pf21_table_records.csv", varnames(1) stringcols(_all) clear
+(encoding automatically selected: ISO-8859-1)
+(15 vars, 311 obs)
+
+. generate country = country_raw
+
+. replace country = substr(country,1,strpos(country," (")-1) if strpos(country," (")>0
+(13 real changes made)
+
+. replace country = "Israel" if substr(country,1,6)=="Israel"
+(1 real change made)
+
+. replace country = "Czechia" if country=="Czech Republic"
+(6 real changes made)
+
+. replace country = "Türkiye" if country=="Turkey"
+(4 real changes made)
+
+. merge m:1 country using "data/country_codes.dta"
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                            52
+        from master                        52  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                               259  (_merge==3)
+    -----------------------------------------
+
+. keep if _merge==3
+(52 observations deleted)
+
+. drop _merge
+
+. generate year = real(caption_year)
+
+. keep if year!=2020
+(38 observations deleted)
+
+. replace year = 2017 if year==2018 & countrycode=="CHL"
+(1 real change made)
+
+. replace year = 2017 if year==2018 & countrycode=="CRI"
+(1 real change made)
+
+. generate weeks = real(total_weeks)
+
+. generate pay_pct = real(total_rate)
+
+. generate suspect = 0
+
+. replace suspect = 1 if real(parental_weeks)>0 & real(parental_rate)==0
+(2 real changes made)
+
+. replace suspect = 1 if real(paternity_weeks)>0 & real(paternity_rate)==0
+(0 real changes made)
+
+. replace suspect = 1 if abs(weeks-real(paternity_weeks)-real(parental_weeks))>0.15
+(0 real changes made)
+
+. generate known_policy = weeks>=0 & weeks<. & pay_pct>=0 & pay_pct<=100.5 & suspect==0
+
+. keep countrycode year weeks pay_pct known_policy suspect
+
+. save "data/policy.dta", replace
+(file data/policy.dta not found)
+file data/policy.dta saved
+
+. 
+. import delimited using "data/maternal_table_records.csv", varnames(1) stringcols(_all) clear
+(encoding automatically selected: ISO-8859-1)
+(15 vars, 265 obs)
+
+. generate country = country_raw
+
+. replace country = substr(country,1,strpos(country," (")-1) if strpos(country," (")>0
+(14 real changes made)
+
+. replace country = "Israel" if substr(country,1,6)=="Israel"
+(1 real change made)
+
+. replace country = "Czechia" if country=="Czech Republic"
+(5 real changes made)
+
+. replace country = "Türkiye" if country=="Turkey"
+(3 real changes made)
+
+. merge m:1 country using "data/country_codes.dta"
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                            44
+        from master                        44  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                               221  (_merge==3)
+    -----------------------------------------
+
+. keep if _merge==3
+(44 observations deleted)
+
+. drop _merge
+
+. generate year = real(caption_year)
+
+. keep if year!=2020
+(0 observations deleted)
+
+. replace year = 2017 if year==2018 & countrycode=="CHL"
+(1 real change made)
+
+. replace year = 2017 if year==2018 & countrycode=="CRI"
+(1 real change made)
+
+. generate maternal_weeks = real(maternity_weeks)
+
+. keep countrycode year maternal_weeks
+
+. save "data/maternal.dta", replace
+(file data/maternal.dta not found)
+file data/maternal.dta saved
+
+. 
+. import excel "data/SOCX2025-All-nat-cur.xlsx", sheet("SOCX_NatCur") allstring clear
+(56 vars, 15,016 obs)
+
+. keep if G=="10" & H=="5" & I=="1" & J=="2" & K=="0"
+(14,975 observations deleted)
+
+. rename A country
+
+. rename C seriescode
+
+. replace country = "Israel" if country=="Israel "
+(1 real change made)
+
+. keep country seriescode L-BC
+
+. rename L spend1980
+
+. rename M spend1981
+
+. rename N spend1982
+
+. rename O spend1983
+
+. rename P spend1984
+
+. rename Q spend1985
+
+. rename R spend1986
+
+. rename S spend1987
+
+. rename T spend1988
+
+. rename U spend1989
+
+. rename V spend1990
+
+. rename W spend1991
+
+. rename X spend1992
+
+. rename Y spend1993
+
+. rename Z spend1994
+
+. rename AA spend1995
+
+. rename AB spend1996
+
+. rename AC spend1997
+
+. rename AD spend1998
+
+. rename AE spend1999
+
+. rename AF spend2000
+
+. rename AG spend2001
+
+. rename AH spend2002
+
+. rename AI spend2003
+
+. rename AJ spend2004
+
+. rename AK spend2005
+
+. rename AL spend2006
+
+. rename AM spend2007
+
+. rename AN spend2008
+
+. rename AO spend2009
+
+. rename AP spend2010
+
+. rename AQ spend2011
+
+. rename AR spend2012
+
+. rename AS spend2013
+
+. rename AT spend2014
+
+. rename AU spend2015
+
+. rename AV spend2016
+
+. rename AW spend2017
+
+. rename AX spend2018
+
+. rename AY spend2019
+
+. rename AZ spend2020
+
+. rename BA spend2021
+
+. rename BB spend2022
+
+. rename BC spend2023
+
+. reshape long spend, i(seriescode) j(year)
+(j = 1980 1981 1982 1983 1984 1985 1986 1987 1988 1989 1990 1991 1992 1993 1994 1995 1996 1997 1998 1
+> 999 2000 2001 2002 2003 2004 2005 2006 2007 2008 2009 2010 2011 2012 2013 2014 2015 2016 2017 2018 
+> 2019 2020 2021 2022 2023)
+
+Data                               Wide   ->   Long
+-----------------------------------------------------------------------------
+Number of observations               41   ->   1,804       
+Number of variables                  46   ->   4           
+j variable (44 values)                    ->   year
+xij variables:
+      spend1980 spend1981 ... spend2023   ->   spend
+-----------------------------------------------------------------------------
+
+. generate leave_million = real(spend)
+(495 missing values generated)
+
+. keep if year>=2000 & year<=2023
+(820 observations deleted)
+
+. merge m:1 country using "data/country_codes.dta"
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                            72
+        from master                        72  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                               912  (_merge==3)
+    -----------------------------------------
+
+. keep if _merge==3
+(72 observations deleted)
+
+. drop _merge
+
+. keep countrycode year spend leave_million
+
+. save "data/spending.dta", replace
+(file data/spending.dta not found)
+file data/spending.dta saved
+
+. 
+. import delimited using "data/ilo_household_raw.csv", varnames(1) clear
+(encoding automatically selected: ISO-8859-1)
+(11 vars, 169,678 obs)
+
+. rename ref_area countrycode
+
+. rename time year
+
+. keep if classif1=="HHT_AGGREGATE_K"
+(135,579 observations deleted)
+
+. keep if classif2=="CHL_AGET6_YES"
+(29,835 observations deleted)
+
+. keep if year>=2000 & year<=2024
+(96 observations deleted)
+
+. keep if obs_status==""
+(38 observations deleted)
+
+. save "data/oecd_employment.dta", replace
+(file data/oecd_employment.dta not found)
+file data/oecd_employment.dta saved
+
+. keep if sex=="SEX_M"
+(2,755 observations deleted)
+
+. keep countrycode year obs_value
+
+. rename obs_value male_rate
+
+. save "data/oecd_male.dta", replace
+(file data/oecd_male.dta not found)
+file data/oecd_male.dta saved
+
+. use "data/oecd_employment.dta", clear
+
+. keep if sex=="SEX_F"
+(2,754 observations deleted)
+
+. keep countrycode year obs_value
+
+. rename obs_value female_rate
+
+. merge 1:1 countrycode year using "data/oecd_male.dta"
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                             1
+        from master                         1  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             1,375  (_merge==3)
+    -----------------------------------------
+
+. keep if _merge==3
+(1 observation deleted)
+
+. drop _merge
+
+. 
+. save "data/oecd_rates.dta", replace
+(file data/oecd_rates.dta not found)
+file data/oecd_rates.dta saved
+
+. 
+. use "data/wdi_raw.dta", clear
+
+. keep countrycode year ny_gdp_pcap_kd ny_gdp_mktp_kd_zg ny_gdp_mktp_cn incomelevel
+
+. merge m:1 countrycode using "data/country_codes.dta"
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                        15,048
+        from master                    15,048  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                             2,508  (_merge==3)
+    -----------------------------------------
+
+. keep if _merge==3
+(15,048 observations deleted)
+
+. drop _merge
+
+. 
+. merge 1:1 countrycode year using "data/oecd_rates.dta"
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,843
+        from master                     1,988  (_merge==1)
+        from using                        855  (_merge==2)
+
+    Matched                               520  (_merge==3)
+    -----------------------------------------
+
+. drop if _merge==2
+(855 observations deleted)
+
+. drop _merge
+
+. merge 1:1 countrycode year using "data/policy.dta"
+(variable year was int, now float to accommodate using data's values)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,287
+        from master                     2,287  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                               221  (_merge==3)
+    -----------------------------------------
+
+. drop if _merge==2
+(0 observations deleted)
+
+. drop _merge
+
+. merge 1:1 countrycode year using "data/maternal.dta"
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         2,287
+        from master                     2,287  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                               221  (_merge==3)
+    -----------------------------------------
+
+. drop if _merge==2
+(0 observations deleted)
+
+. drop _merge
+
+. merge 1:1 countrycode year using "data/spending.dta"
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                         1,596
+        from master                     1,596  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                               912  (_merge==3)
+    -----------------------------------------
+
+. drop if _merge==2
+(0 observations deleted)
+
+. drop _merge
+
+. keep if year>=1999 & year<=2024
+(1,520 observations deleted)
+
+. encode countrycode, generate(ccode)
+
+. tsset ccode year
+
+Panel variable: ccode (strongly balanced)
+ Time variable: year, 1999 to 2024
+         Delta: 1 unit
+
+. generate lngdp = ln(ny_gdp_pcap_kd)
+
+. generate gdp_growth = ny_gdp_mktp_kd_zg
+
+. generate lag_lngdp = L1.lngdp
+(38 missing values generated)
+
+. generate lag_gdp_growth = L1.gdp_growth
+(38 missing values generated)
+
+. generate employment_gap = male_rate-female_rate
+(468 missing values generated)
+
+. generate leave_gdp = 100*leave_million*1000000/ny_gdp_mktp_cn
+(216 missing values generated)
+
+. generate pay_c = pay_pct-100
+(767 missing values generated)
+
+. generate week_pay = weeks*pay_c
+(767 missing values generated)
+
+. generate usable = employment_gap!=. & known_policy==1 & weeks!=. & pay_pct!=. & leave_million>=0 & 
+> leave_million<. & ny_gdp_mktp_cn>0 & ny_gdp_mktp_cn<. & leave_gdp!=. & maternal_weeks>=0 & maternal
+> _weeks<. & lag_lngdp!=. & lag_gdp_growth!=.
+
+. bysort ccode: egen usable_years = total(usable)
+
+. save "results/oecd_before_selection.dta", replace
+(file results/oecd_before_selection.dta not found)
+file results/oecd_before_selection.dta saved
+
+. keep if usable_years>=2 & usable==1
+(911 observations deleted)
+
+. tsset ccode year
+
+Panel variable: ccode (unbalanced)
+ Time variable: year, 2015 to 2023, but with gaps
+         Delta: 1 unit
+
+. save "results/oecd_panel.dta", replace
+(file results/oecd_panel.dta not found)
+file results/oecd_panel.dta saved
+
+. 
+. xtreg employment_gap lag_lngdp leave_gdp maternal_weeks lag_gdp_growth c.weeks##c.pay_c i.year i.cc
+> ode, fe
+note: 3.ccode omitted because of collinearity.
+note: 6.ccode omitted because of collinearity.
+note: 7.ccode omitted because of collinearity.
+note: 9.ccode omitted because of collinearity.
+note: 10.ccode omitted because of collinearity.
+note: 12.ccode omitted because of collinearity.
+note: 13.ccode omitted because of collinearity.
+note: 15.ccode omitted because of collinearity.
+note: 16.ccode omitted because of collinearity.
+note: 17.ccode omitted because of collinearity.
+note: 18.ccode omitted because of collinearity.
+note: 19.ccode omitted because of collinearity.
+note: 22.ccode omitted because of collinearity.
+note: 25.ccode omitted because of collinearity.
+note: 27.ccode omitted because of collinearity.
+note: 29.ccode omitted because of collinearity.
+note: 32.ccode omitted because of collinearity.
+note: 33.ccode omitted because of collinearity.
+note: 35.ccode omitted because of collinearity.
+
+Fixed-effects (within) regression               Number of obs     =         77
+Group variable: ccode                           Number of groups  =         20
+
+R-squared:                                      Obs per group:
+     Within  = 0.3126                                         min =          3
+     Between = 0.0065                                         avg =        3.9
+     Overall = 0.0048                                         max =          6
+
+                                                F(13, 44)         =       1.54
+corr(u_i, Xb) = -0.8075                         Prob > F          =     0.1415
+
+---------------------------------------------------------------------------------
+ employment_gap | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+----------------+----------------------------------------------------------------
+      lag_lngdp |   -31.2451   15.07969    -2.07   0.044    -61.63622   -.8539809
+      leave_gdp |  -4.481894   19.86436    -0.23   0.823    -44.51587    35.55208
+ maternal_weeks |  -.5837811   .8616185    -0.68   0.502    -2.320259    1.152697
+ lag_gdp_growth |   .5733874   .3405795     1.68   0.099    -.1130056     1.25978
+          weeks |   .3796256   .4134936     0.92   0.364    -.4537159    1.212967
+          pay_c |   .0968661   .0682474     1.42   0.163    -.0406775    .2344098
+                |
+c.weeks#c.pay_c |   -.016093    .009093    -1.77   0.084    -.0344187    .0022327
+                |
+           year |
+          2016  |   .1156291   1.500613     0.08   0.939    -2.908658    3.139916
+          2017  |  -.9398027   5.004913    -0.19   0.852    -11.02654    9.146938
+          2018  |   .8745414   1.826043     0.48   0.634    -2.805607     4.55469
+          2021  |   .8795108   3.431021     0.26   0.799    -6.035258     7.79428
+          2022  |  -8.177349   4.371954    -1.87   0.068    -16.98844    .6337457
+          2023  |  -5.891037   4.471246    -1.32   0.194    -14.90224    3.120168
+                |
+          ccode |
+           BEL  |          0  (omitted)
+           CHL  |          0  (omitted)
+           COL  |          0  (omitted)
+           CZE  |          0  (omitted)
+           DEU  |          0  (omitted)
+           ESP  |          0  (omitted)
+           EST  |          0  (omitted)
+           FRA  |          0  (omitted)
+           GBR  |          0  (omitted)
+           GRC  |          0  (omitted)
+           HUN  |          0  (omitted)
+           IRL  |          0  (omitted)
+           ITA  |          0  (omitted)
+           LTU  |          0  (omitted)
+           LVA  |          0  (omitted)
+           NLD  |          0  (omitted)
+           POL  |          0  (omitted)
+           PRT  |          0  (omitted)
+           SVN  |          0  (omitted)
+                |
+          _cons |   348.3178   155.4711     2.24   0.030     34.98648    661.6491
+----------------+----------------------------------------------------------------
+        sigma_u |  22.867963
+        sigma_e |  4.2533707
+            rho |  .96656193   (fraction of variance due to u_i)
+---------------------------------------------------------------------------------
+F test that all u_i=0: F(19, 44) = 18.21                     Prob > F = 0.0000
+
+. testparm i.year
+
+ ( 1)  2016.year = 0
+ ( 2)  2017.year = 0
+ ( 3)  2018.year = 0
+ ( 4)  2021.year = 0
+ ( 5)  2022.year = 0
+ ( 6)  2023.year = 0
+
+       F(  6,    44) =    1.04
+            Prob > F =    0.4101
+
+. 
+. xtreg employment_gap lag_lngdp leave_gdp maternal_weeks lag_gdp_growth c.weeks##c.pay_c i.year i.cc
+> ode, fe
+note: 3.ccode omitted because of collinearity.
+note: 6.ccode omitted because of collinearity.
+note: 7.ccode omitted because of collinearity.
+note: 9.ccode omitted because of collinearity.
+note: 10.ccode omitted because of collinearity.
+note: 12.ccode omitted because of collinearity.
+note: 13.ccode omitted because of collinearity.
+note: 15.ccode omitted because of collinearity.
+note: 16.ccode omitted because of collinearity.
+note: 17.ccode omitted because of collinearity.
+note: 18.ccode omitted because of collinearity.
+note: 19.ccode omitted because of collinearity.
+note: 22.ccode omitted because of collinearity.
+note: 25.ccode omitted because of collinearity.
+note: 27.ccode omitted because of collinearity.
+note: 29.ccode omitted because of collinearity.
+note: 32.ccode omitted because of collinearity.
+note: 33.ccode omitted because of collinearity.
+note: 35.ccode omitted because of collinearity.
+
+Fixed-effects (within) regression               Number of obs     =         77
+Group variable: ccode                           Number of groups  =         20
+
+R-squared:                                      Obs per group:
+     Within  = 0.3126                                         min =          3
+     Between = 0.0065                                         avg =        3.9
+     Overall = 0.0048                                         max =          6
+
+                                                F(13, 44)         =       1.54
+corr(u_i, Xb) = -0.8075                         Prob > F          =     0.1415
+
+---------------------------------------------------------------------------------
+ employment_gap | Coefficient  Std. err.      t    P>|t|     [95% conf. interval]
+----------------+----------------------------------------------------------------
+      lag_lngdp |   -31.2451   15.07969    -2.07   0.044    -61.63622   -.8539809
+      leave_gdp |  -4.481894   19.86436    -0.23   0.823    -44.51587    35.55208
+ maternal_weeks |  -.5837811   .8616185    -0.68   0.502    -2.320259    1.152697
+ lag_gdp_growth |   .5733874   .3405795     1.68   0.099    -.1130056     1.25978
+          weeks |   .3796256   .4134936     0.92   0.364    -.4537159    1.212967
+          pay_c |   .0968661   .0682474     1.42   0.163    -.0406775    .2344098
+                |
+c.weeks#c.pay_c |   -.016093    .009093    -1.77   0.084    -.0344187    .0022327
+                |
+           year |
+          2016  |   .1156291   1.500613     0.08   0.939    -2.908658    3.139916
+          2017  |  -.9398027   5.004913    -0.19   0.852    -11.02654    9.146938
+          2018  |   .8745414   1.826043     0.48   0.634    -2.805607     4.55469
+          2021  |   .8795108   3.431021     0.26   0.799    -6.035258     7.79428
+          2022  |  -8.177349   4.371954    -1.87   0.068    -16.98844    .6337457
+          2023  |  -5.891037   4.471246    -1.32   0.194    -14.90224    3.120168
+                |
+          ccode |
+           BEL  |          0  (omitted)
+           CHL  |          0  (omitted)
+           COL  |          0  (omitted)
+           CZE  |          0  (omitted)
+           DEU  |          0  (omitted)
+           ESP  |          0  (omitted)
+           EST  |          0  (omitted)
+           FRA  |          0  (omitted)
+           GBR  |          0  (omitted)
+           GRC  |          0  (omitted)
+           HUN  |          0  (omitted)
+           IRL  |          0  (omitted)
+           ITA  |          0  (omitted)
+           LTU  |          0  (omitted)
+           LVA  |          0  (omitted)
+           NLD  |          0  (omitted)
+           POL  |          0  (omitted)
+           PRT  |          0  (omitted)
+           SVN  |          0  (omitted)
+                |
+          _cons |   348.3178   155.4711     2.24   0.030     34.98648    661.6491
+----------------+----------------------------------------------------------------
+        sigma_u |  22.867963
+        sigma_e |  4.2533707
+            rho |  .96656193   (fraction of variance due to u_i)
+---------------------------------------------------------------------------------
+F test that all u_i=0: F(19, 44) = 18.21                     Prob > F = 0.0000
+
+. xttest3
+
+Modified Wald test for groupwise heteroskedasticity
+in fixed effect regression model
+
+H0: sigma(i)^2 = sigma^2 for all i
+
+chi2 (20)  =      310241.98
+Prob > chi2 =          0.0000
+
+
+. 
+. capture noisily xtserial employment_gap leave_gdp maternal_weeks lag_gdp_growth weeks pay_c week_pa
+> y
+
+Wooldridge test for autocorrelation in panel data
+H0: no first-order autocorrelation
+    F(  1,       1) =   2097.672
+           Prob > F =      0.0139
+
+. 
+. xtpcse employment_gap lag_lngdp leave_gdp maternal_weeks lag_gdp_growth c.weeks##c.pay_c i.year i.c
+> code, het corr(ar1)
+
+Number of gaps in sample = 32
+note: computations for rho restarted at each gap.
+note: estimates of rho outside [-1,1] bounded to be in the range [-1,1].
+
+Prais–Winsten regression, heteroskedastic panels corrected standard errors
+
+Group variable:   ccode                         Number of obs     =         77
+Time variable:    year                          Number of groups  =         20
+Panels:           heteroskedastic (unbalanced)  Obs per group:
+Autocorrelation:  common AR(1)                                min =          3
+                                                              avg =       3.85
+                                                              max =          6
+Estimated covariances      =        20          R-squared         =     0.9416
+Estimated autocorrelations =         1          Wald chi2(32)     =   20664.75
+Estimated coefficients     =        33          Prob > chi2       =     0.0000
+
+---------------------------------------------------------------------------------
+                |            Het-corrected
+ employment_gap | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+----------------+----------------------------------------------------------------
+      lag_lngdp |  -31.16852   15.40616    -2.02   0.043    -61.36403   -.9730045
+      leave_gdp |   -4.65973   20.53982    -0.23   0.821    -44.91704    35.59758
+ maternal_weeks |  -.5898425   .5882399    -1.00   0.316    -1.742772    .5630865
+ lag_gdp_growth |   .5798111   .2442543     2.37   0.018     .1010815    1.058541
+          weeks |   .3862485   .2522318     1.53   0.126    -.1081166    .8806137
+          pay_c |   .0974211   .0736872     1.32   0.186    -.0470032    .2418454
+                |
+c.weeks#c.pay_c |  -.0161357   .0051107    -3.16   0.002    -.0261525   -.0061189
+                |
+           year |
+          2016  |   .1063173   1.149643     0.09   0.926    -2.146941    2.359576
+          2017  |  -1.010071    1.31999    -0.77   0.444    -3.597204    1.577062
+          2018  |   .8525331   1.190357     0.72   0.474    -1.480525    3.185591
+          2021  |   .9021788   1.653484     0.55   0.585     -2.33859    4.142947
+          2022  |  -8.262521   2.523706    -3.27   0.001    -13.20889   -3.316148
+          2023  |  -5.952334   1.491785    -3.99   0.000    -8.876179   -3.028489
+                |
+          ccode |
+           BEL  |  -24.20946   4.977564    -4.86   0.000    -33.96531   -14.45361
+           CHL  |  -10.00973    15.8699    -0.63   0.528    -41.11416    21.09471
+           COL  |  -23.65925   29.77021    -0.79   0.427    -82.00779    34.68928
+           CZE  |   30.32285   12.40439     2.44   0.015     6.010702      54.635
+           DEU  |   5.253412   2.075545     2.53   0.011     1.185418    9.321405
+           ESP  |  -10.75278      7.407    -1.45   0.147    -25.27023    3.764673
+           EST  |   2.208387    17.9015     0.12   0.902    -32.87791    37.29469
+           FRA  |   -38.3746   10.69067    -3.59   0.000    -59.32793   -17.42127
+           GBR  |   27.91599   16.75868     1.67   0.096    -4.930418     60.7624
+           GRC  |    9.08556   14.60506     0.62   0.534    -19.53984    37.71096
+           HUN  |   .3548439   14.96209     0.02   0.981     -28.9703    29.67999
+           IRL  |   22.39514   12.27997     1.82   0.068    -1.673152    46.46343
+           ITA  |   11.87244   4.598326     2.58   0.010     2.859885    20.88499
+           LTU  |  -34.20951   13.32176    -2.57   0.010    -60.31968   -8.099351
+           LVA  |  -27.30061   14.35115    -1.90   0.057    -55.42835    .8271258
+           NLD  |   .6445124   1.848356     0.35   0.727    -2.978199    4.267223
+           POL  |  -22.24848   14.18073    -1.57   0.117    -50.04221    5.545239
+           PRT  |  -54.86705   18.10232    -3.03   0.002    -90.34694   -19.38715
+           SVN  |  -23.19251    9.81066    -2.36   0.018    -42.42105    -3.96397
+                |
+          _cons |   356.5002   170.1135     2.10   0.036     23.08394    689.9165
+----------------+----------------------------------------------------------------
+            rho |  -.0393515
+---------------------------------------------------------------------------------
+
+. 
+. xtpcse employment_gap lag_lngdp leave_gdp maternal_weeks lag_gdp_growth c.weeks##c.pay_c c.weeks#c.
+> weeks i.year i.ccode, het corr(ar1)
+
+Number of gaps in sample = 32
+note: computations for rho restarted at each gap.
+note: estimates of rho outside [-1,1] bounded to be in the range [-1,1].
+
+Prais–Winsten regression, heteroskedastic panels corrected standard errors
+
+Group variable:   ccode                         Number of obs     =         77
+Time variable:    year                          Number of groups  =         20
+Panels:           heteroskedastic (unbalanced)  Obs per group:
+Autocorrelation:  common AR(1)                                min =          3
+                                                              avg =       3.85
+                                                              max =          6
+Estimated covariances      =        20          R-squared         =     0.9417
+Estimated autocorrelations =         1          Wald chi2(33)     =   21613.18
+Estimated coefficients     =        34          Prob > chi2       =     0.0000
+
+---------------------------------------------------------------------------------
+                |            Het-corrected
+ employment_gap | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+----------------+----------------------------------------------------------------
+      lag_lngdp |  -31.45995    16.2329    -1.94   0.053    -63.27584    .3559433
+      leave_gdp |  -4.608963   20.41607    -0.23   0.821    -44.62372     35.4058
+ maternal_weeks |  -.5946869   .5950749    -1.00   0.318    -1.761012    .5716384
+ lag_gdp_growth |   .5813423   .2460048     2.36   0.018     .0991817    1.063503
+          weeks |   .4489702    .486777     0.92   0.356    -.5050953    1.403036
+          pay_c |   .0968994    .072529     1.34   0.182    -.0452549    .2390536
+                |
+c.weeks#c.pay_c |  -.0161739   .0051803    -3.12   0.002    -.0263271   -.0060208
+                |
+c.weeks#c.weeks |  -.0033485   .0170926    -0.20   0.845    -.0368494    .0301524
+                |
+           year |
+          2016  |   .1136253   1.157699     0.10   0.922    -2.155423    2.382673
+          2017  |  -.9554487   1.411259    -0.68   0.498    -3.721466    1.810568
+          2018  |   .8567057   1.189764     0.72   0.471    -1.475188    3.188599
+          2021  |   .9297145   1.688779     0.55   0.582    -2.380231     4.23966
+          2022  |  -8.092477   2.358876    -3.43   0.001    -12.71579   -3.469166
+          2023  |  -5.884135   1.588775    -3.70   0.000    -8.998077   -2.770192
+                |
+          ccode |
+           BEL  |  -23.97059   4.643071    -5.16   0.000    -33.07084   -14.87034
+           CHL  |  -10.14819   16.23206    -0.63   0.532    -41.96244    21.66607
+           COL  |  -24.10185   31.00795    -0.78   0.437    -84.87631    36.67261
+           CZE  |   30.33852   12.39683     2.45   0.014     6.041179    54.63586
+           DEU  |    5.21454   2.049099     2.54   0.011      1.19838      9.2307
+           ESP  |  -10.74894   7.399683    -1.45   0.146    -25.25205    3.754174
+           EST  |   2.095031   17.80464     0.12   0.906    -32.80142    36.99149
+           FRA  |  -37.33026   9.503072    -3.93   0.000    -55.95594   -18.70458
+           GBR  |   28.18947   17.34021     1.63   0.104    -5.796709    62.17565
+           GRC  |   9.237161   14.56218     0.63   0.526    -19.30418     37.7785
+           HUN  |   .2675175   15.05763     0.02   0.986    -29.24489    29.77992
+           IRL  |    22.7494   13.26709     1.71   0.086    -3.253621    48.75241
+           ITA  |   12.07921   4.567043     2.64   0.008     3.127971    21.03045
+           LTU  |  -34.43491   13.67127    -2.52   0.012    -61.23011   -7.639703
+           LVA  |  -27.45773    14.5201    -1.89   0.059    -55.91661    1.001149
+           NLD  |   .9522613   2.354332     0.40   0.686    -3.662145    5.566668
+           POL  |  -22.39664   14.47636    -1.55   0.122    -50.76978    5.976495
+           PRT  |  -54.67156   17.60934    -3.10   0.002    -89.18523   -20.15788
+           SVN  |  -23.29874   9.906699    -2.35   0.019    -42.71551   -3.881964
+                |
+          _cons |   359.3674   178.2117     2.02   0.044     10.07883     708.656
+----------------+----------------------------------------------------------------
+            rho |  -.0406519
+---------------------------------------------------------------------------------
+
+. 
+. su employment_gap, detail
+
+                       employment_gap
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     8.176003       8.176003
+ 5%       10.476       9.955002
+10%       13.244       9.983002       Obs                  77
+25%       16.709         10.476       Sum of wgt.          77
+
+50%       21.652                      Mean           26.85631
+                        Largest       Std. dev.       13.1852
+75%       34.559          54.27
+90%       48.032         55.293       Variance       173.8496
+95%        54.27         55.559       Skewness       .8278422
+99%       60.548         60.548       Kurtosis        2.74123
+
+. generate employment_gap_winsor = employment_gap
+
+. replace employment_gap_winsor = r(p1) if employment_gap_winsor < r(p1) & employment_gap_winsor != .
+(0 real changes made)
+
+. replace employment_gap_winsor = r(p99) if employment_gap_winsor > r(p99) & employment_gap_winsor !=
+>  .
+(0 real changes made)
+
+. 
+. su lag_lngdp, detail
+
+                          lag_lngdp
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     8.681343       8.681343
+ 5%     9.400395       8.772946
+10%     9.451848       8.832985       Obs                  77
+25%     9.573792       9.400395       Sum of wgt.          77
+
+50%     9.900831                      Mean           10.03744
+                        Largest       Std. dev.      .5545425
+75%     10.61568       10.77206
+90%     10.71568       10.85986       Variance       .3075174
+95%     10.77206       11.07054       Skewness      -.0704134
+99%     11.15265       11.15265       Kurtosis       2.308429
+
+. generate lag_lngdp_winsor = lag_lngdp
+
+. replace lag_lngdp_winsor = r(p1) if lag_lngdp_winsor < r(p1) & lag_lngdp_winsor != .
+(0 real changes made)
+
+. replace lag_lngdp_winsor = r(p99) if lag_lngdp_winsor > r(p99) & lag_lngdp_winsor != .
+(0 real changes made)
+
+. 
+. xtpcse employment_gap_winsor lag_lngdp_winsor leave_gdp maternal_weeks lag_gdp_growth c.weeks##c.pa
+> y_c c.weeks#c.weeks i.year i.ccode, het corr(ar1)
+
+Number of gaps in sample = 32
+note: computations for rho restarted at each gap.
+note: estimates of rho outside [-1,1] bounded to be in the range [-1,1].
+
+Prais–Winsten regression, heteroskedastic panels corrected standard errors
+
+Group variable:   ccode                         Number of obs     =         77
+Time variable:    year                          Number of groups  =         20
+Panels:           heteroskedastic (unbalanced)  Obs per group:
+Autocorrelation:  common AR(1)                                min =          3
+                                                              avg =       3.85
+                                                              max =          6
+Estimated covariances      =        20          R-squared         =     0.9417
+Estimated autocorrelations =         1          Wald chi2(33)     =   21613.18
+Estimated coefficients     =        34          Prob > chi2       =     0.0000
+
+----------------------------------------------------------------------------------
+                 |            Het-corrected
+employment_gap~r | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+lag_lngdp_winsor |  -31.45995    16.2329    -1.94   0.053    -63.27584    .3559433
+       leave_gdp |  -4.608963   20.41607    -0.23   0.821    -44.62372     35.4058
+  maternal_weeks |  -.5946869   .5950749    -1.00   0.318    -1.761012    .5716384
+  lag_gdp_growth |   .5813423   .2460048     2.36   0.018     .0991817    1.063503
+           weeks |   .4489702    .486777     0.92   0.356    -.5050953    1.403036
+           pay_c |   .0968994    .072529     1.34   0.182    -.0452549    .2390536
+                 |
+ c.weeks#c.pay_c |  -.0161739   .0051803    -3.12   0.002    -.0263271   -.0060208
+                 |
+ c.weeks#c.weeks |  -.0033485   .0170926    -0.20   0.845    -.0368494    .0301524
+                 |
+            year |
+           2016  |   .1136253   1.157699     0.10   0.922    -2.155423    2.382673
+           2017  |  -.9554487   1.411259    -0.68   0.498    -3.721466    1.810568
+           2018  |   .8567057   1.189764     0.72   0.471    -1.475188    3.188599
+           2021  |   .9297145   1.688779     0.55   0.582    -2.380231     4.23966
+           2022  |  -8.092477   2.358876    -3.43   0.001    -12.71579   -3.469166
+           2023  |  -5.884135   1.588775    -3.70   0.000    -8.998077   -2.770192
+                 |
+           ccode |
+            BEL  |  -23.97059   4.643071    -5.16   0.000    -33.07084   -14.87034
+            CHL  |  -10.14819   16.23206    -0.63   0.532    -41.96244    21.66607
+            COL  |  -24.10185   31.00795    -0.78   0.437    -84.87631    36.67261
+            CZE  |   30.33852   12.39683     2.45   0.014     6.041179    54.63586
+            DEU  |    5.21454   2.049099     2.54   0.011      1.19838      9.2307
+            ESP  |  -10.74894   7.399683    -1.45   0.146    -25.25205    3.754174
+            EST  |   2.095031   17.80464     0.12   0.906    -32.80142    36.99149
+            FRA  |  -37.33026   9.503072    -3.93   0.000    -55.95594   -18.70458
+            GBR  |   28.18947   17.34021     1.63   0.104    -5.796709    62.17565
+            GRC  |   9.237161   14.56218     0.63   0.526    -19.30418     37.7785
+            HUN  |   .2675175   15.05763     0.02   0.986    -29.24489    29.77992
+            IRL  |    22.7494   13.26709     1.71   0.086    -3.253621    48.75241
+            ITA  |   12.07921   4.567043     2.64   0.008     3.127971    21.03045
+            LTU  |  -34.43491   13.67127    -2.52   0.012    -61.23011   -7.639703
+            LVA  |  -27.45773    14.5201    -1.89   0.059    -55.91661    1.001149
+            NLD  |   .9522613   2.354332     0.40   0.686    -3.662145    5.566668
+            POL  |  -22.39664   14.47636    -1.55   0.122    -50.76978    5.976495
+            PRT  |  -54.67156   17.60934    -3.10   0.002    -89.18523   -20.15788
+            SVN  |  -23.29874   9.906699    -2.35   0.019    -42.71551   -3.881964
+                 |
+           _cons |   359.3674   178.2117     2.02   0.044     10.07883     708.656
+-----------------+----------------------------------------------------------------
+             rho |  -.0406519
+----------------------------------------------------------------------------------
+
+. 
+. xtpcse employment_gap_winsor lag_lngdp_winsor leave_gdp maternal_weeks lag_gdp_growth c.weeks##c.pa
+> y_c c.weeks#c.weeks i.year i.ccode if incomelevel == "HIC", het corr(ar1)
+
+Number of gaps in sample = 32
+note: computations for rho restarted at each gap.
+note: estimates of rho outside [-1,1] bounded to be in the range [-1,1].
+
+Prais–Winsten regression, heteroskedastic panels corrected standard errors
+
+Group variable:   ccode                         Number of obs     =         74
+Time variable:    year                          Number of groups  =         19
+Panels:           heteroskedastic (unbalanced)  Obs per group:
+Autocorrelation:  common AR(1)                                min =          3
+                                                              avg =  3.8947368
+                                                              max =          6
+Estimated covariances      =        19          R-squared         =     0.9322
+Estimated autocorrelations =         1          Wald chi2(32)     =   10429.66
+Estimated coefficients     =        33          Prob > chi2       =     0.0000
+
+----------------------------------------------------------------------------------
+                 |            Het-corrected
+employment_gap~r | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+lag_lngdp_winsor |  -31.72706   16.23817    -1.95   0.051    -63.55328    .0991557
+       leave_gdp |  -4.641415   20.13531    -0.23   0.818     -44.1059    34.82307
+  maternal_weeks |  -.5783225   .5852159    -0.99   0.323    -1.725324    .5686795
+  lag_gdp_growth |   .5430227    .256487     2.12   0.034     .0403174    1.045728
+           weeks |   .3625996    .528246     0.69   0.492    -.6727435    1.397943
+           pay_c |   .0955243   .0730941     1.31   0.191    -.0477375    .2387861
+                 |
+ c.weeks#c.pay_c |  -.0160049   .0051985    -3.08   0.002    -.0261937   -.0058161
+                 |
+ c.weeks#c.weeks |  -.0005571   .0187566    -0.03   0.976    -.0373193    .0362051
+                 |
+            year |
+           2016  |   .1695695   1.120285     0.15   0.880    -2.026149    2.365288
+           2017  |  -.9982328   1.370769    -0.73   0.466    -3.684891    1.688425
+           2018  |   .9800431    1.19057     0.82   0.410    -1.353432    3.313518
+           2021  |   .8066175   1.679951     0.48   0.631    -2.486027    4.099262
+           2022  |  -7.880533   2.501978    -3.15   0.002    -12.78432   -2.976747
+           2023  |  -6.595773   1.691353    -3.90   0.000    -9.910764   -3.280782
+                 |
+           ccode |
+            BEL  |  -23.74008   4.647921    -5.11   0.000    -32.84984   -14.63033
+            CHL  |  -10.73611   16.24295    -0.66   0.509    -42.57172     21.0995
+            CZE  |   29.41287   12.34176     2.38   0.017     5.223471    53.60227
+            DEU  |   5.232959   2.023891     2.59   0.010     1.266207    9.199712
+            ESP  |  -11.10255   7.375706    -1.51   0.132    -25.55866    3.353572
+            EST  |   1.552778   17.63043     0.09   0.930    -33.00224     36.1078
+            FRA  |  -37.51233   9.514055    -3.94   0.000    -56.15954   -18.86513
+            GBR  |   27.37035   17.23025     1.59   0.112    -6.400309    61.14101
+            GRC  |   7.984303   14.47759     0.55   0.581    -20.39126    36.35986
+            HUN  |  -.7537565   15.08643    -0.05   0.960    -30.32261    28.81509
+            IRL  |   22.63094   13.22375     1.71   0.087    -3.287129    48.54902
+            ITA  |   11.38595   4.658751     2.44   0.015     2.254962    20.51693
+            LTU  |  -34.72408   13.66041    -2.54   0.011      -61.498   -7.950156
+            LVA  |  -28.14793    14.4451    -1.95   0.051     -56.4598    .1639475
+            NLD  |   .4851813   2.600915     0.19   0.852    -4.612518    5.582881
+            POL  |  -23.05569   14.48862    -1.59   0.112    -51.45286    5.341476
+            PRT  |  -54.58214   17.53922    -3.11   0.002    -88.95838   -20.20591
+            SVN  |   -23.6853   9.844427    -2.41   0.016    -42.98002   -4.390572
+                 |
+           _cons |    362.501   177.9939     2.04   0.042     13.63943    711.3626
+-----------------+----------------------------------------------------------------
+             rho |   .0275984
+----------------------------------------------------------------------------------
+
+. estimates store model1
+
+. etable, estimates(model1) mstat(N) mstat(r2) showstars showstarsnote export(results/oecd_Test7table
+> .docx, replace)
+
+--------------------------------------------
+                       employment_gap_winsor
+--------------------------------------------
+lag_lngdp_winsor              -31.727       
+                             (16.238)       
+leave_gdp                      -4.641       
+                             (20.135)       
+maternal_weeks                 -0.578       
+                              (0.585)       
+lag_gdp_growth                  0.543 *     
+                              (0.256)       
+weeks                           0.363       
+                              (0.528)       
+pay_c                           0.096       
+                              (0.073)       
+weeks # pay_c                  -0.016 **    
+                              (0.005)       
+weeks # weeks                  -0.001       
+                              (0.019)       
+Year                                        
+  2016                          0.170       
+                              (1.120)       
+  2017                         -0.998       
+                              (1.371)       
+  2018                          0.980       
+                              (1.191)       
+  2021                          0.807       
+                              (1.680)       
+  2022                         -7.881 **    
+                              (2.502)       
+  2023                         -6.596 **    
+                              (1.691)       
+Country Code                                
+  BEL                         -23.740 **    
+                              (4.648)       
+  CHL                         -10.736       
+                             (16.243)       
+  CZE                          29.413 *     
+                             (12.342)       
+  DEU                           5.233 **    
+                              (2.024)       
+  ESP                         -11.103       
+                              (7.376)       
+  EST                           1.553       
+                             (17.630)       
+  FRA                         -37.512 **    
+                              (9.514)       
+  GBR                          27.370       
+                             (17.230)       
+  GRC                           7.984       
+                             (14.478)       
+  HUN                          -0.754       
+                             (15.086)       
+  IRL                          22.631       
+                             (13.224)       
+  ITA                          11.386 *     
+                              (4.659)       
+  LTU                         -34.724 *     
+                             (13.660)       
+  LVA                         -28.148       
+                             (14.445)       
+  NLD                           0.485       
+                              (2.601)       
+  POL                         -23.056       
+                             (14.489)       
+  PRT                         -54.582 **    
+                             (17.539)       
+  SVN                         -23.685 *     
+                              (9.844)       
+Intercept                     362.501 *     
+                            (177.994)       
+Number of observations             74       
+R-squared                        0.93       
+--------------------------------------------
+** p<.01, * p<.05
+(collection ETable exported to file results/oecd_Test7table.docx)
+
+. 
+. capture log close
